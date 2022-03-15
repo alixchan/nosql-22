@@ -8,7 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersistentTest extends BaseTest {
+    @DaoTest(stage = 2)
+    void entryTest(Dao<String, Entry<String>> dao) throws IOException {
+        dao.upsert(entry("a", "b"));
+        dao.upsert(entry("bKey!", "VALUE"));
+        dao.upsert(entry("ccadcacwkka", "d"));
+        dao.upsert(entry("ewak12fakorw", "1"));
+        dao.upsert(entry("fttt", "faw54fa5w4fw35a"));
+        dao.upsert(entry("fff", "v1"));
+        dao.upsert(entry("nawfjf", "afl"));
+        dao.close();
 
+        dao = DaoFactory.Factory.reopen(dao);
+        assertSame(dao.get("ewak12fakorw"), entry("ewak12fakorw", "1"));
+    }
 
     @DaoTest(stage = 2)
     void persistent(Dao<String, Entry<String>> dao) throws IOException {
